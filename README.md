@@ -28,6 +28,7 @@ RoBERTa-base (text) and wav2vec 2.0 (speech) are combined with a late-fusion MLP
 - [Data notes](#data-notes)
 - [Setup and reproduction](#setup-and-reproduction)
 - [Repository layout](#repository-layout)
+- [License](#license)
 
 ## Model
 
@@ -194,7 +195,13 @@ python src/app_day16.py --model turbo    # larger ASR model if you have a GPU
 python src/app_day16.py --selftest 20    # check online features / predictions against the stored ones
 ```
 
-The trained checkpoints (text + audio, text only, audio only) and calibration files are on the Hugging Face Hub: [Aiyeee/meld-emotion-late-fusion](https://huggingface.co/Aiyeee/meld-emotion-late-fusion). Download them into `results/` to run the demo without training. `space/app.py` downloads them automatically.
+The trained checkpoints (text + audio, text only, audio only) and calibration files are on the Hugging Face Hub: [Aiyeee/meld-emotion-late-fusion](https://huggingface.co/Aiyeee/meld-emotion-late-fusion). To run the demo without training, download the three `.pt` files into `results/` (the matching `.json` and temperature files are already in the repo):
+
+```bash
+python -c "from huggingface_hub import hf_hub_download as d; [d('Aiyeee/meld-emotion-late-fusion', f, local_dir='results') for f in ('fusion_best.pt', 'fusion_day13_text.pt', 'fusion_day13_audio_e20.pt')]"
+```
+
+`space/app.py` is the entry point for the Space layout built by `src/deploy_day17.py build`; it does not run from the repository root.
 
 ## Repository layout
 
@@ -216,3 +223,7 @@ EXPERIMENTS.md  full experiment log with commands (auto-generated)
 
 Poria, S., Hazarika, D., Majumder, N., Naik, G., Cambria, E., & Mihalcea, R. (2019).
 *MELD: A Multimodal Multi-Party Dataset for Emotion Recognition in Conversations.* ACL 2019.
+
+## License
+
+Code and trained weights are released under the [GNU General Public License v3.0](LICENSE), the same licence as the MELD dataset. MELD audio, video and transcripts are not redistributed here.
